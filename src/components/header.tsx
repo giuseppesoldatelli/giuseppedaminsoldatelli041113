@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, Eye, EyeOff } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,11 +21,13 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 flex justify-end p-4 z-50">
-      <Popover open={open} onOpenChange={setOpen}>
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="text-xs sm:text-sm text-muted-foreground hover:text-foreground px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border-border hover:border-primary/50 font-medium bg-card/80 backdrop-blur-sm shadow-sm"
+            className="text-xs sm:text-sm text-muted-foreground hover:text-foreground px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border-border hover:border-primary/50 font-medium bg-card shadow-sm dark:bg-card/90 dark:text-foreground dark:border-border/60"
           >
             Entrar
             <ChevronDown
@@ -155,6 +158,7 @@ export function Header() {
           </Tabs>
         </PopoverContent>
       </Popover>
+      </div>
     </header>
   );
 }

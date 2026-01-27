@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const outfit = Outfit({
 	variable: "--font-outfit",
@@ -24,10 +25,12 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body className={`${outfit.variable} ${geistMono.variable} antialiased font-sans`}>
-				<Header />
-				{children}
+				<ThemeProvider>
+					<Header />
+					{children}
+				</ThemeProvider>
 			</body>
 		</html>
 	);

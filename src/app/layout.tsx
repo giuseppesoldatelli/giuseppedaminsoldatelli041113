@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { Header } from "@/components/header";
 
 const outfit = Outfit({
 	variable: "--font-outfit",
@@ -27,15 +26,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${outfit.variable} ${geistMono.variable} antialiased font-sans`}>
-				<header className="fixed top-0 left-0 right-0 flex justify-end p-4">
-					<Button
-						variant="outline"
-						className="text-xs sm:text-sm text-muted-foreground hover:text-foreground px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border-border hover:border-primary/50 font-medium bg-card/80 backdrop-blur-sm shadow-sm"
-					>
-						Entrar
-						<ChevronDown className="w-3 h-3 rotate-180" strokeWidth={1.5} />
-					</Button>
-				</header>
+				<Header />
 				{children}
 			</body>
 		</html>

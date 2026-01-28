@@ -1,6 +1,8 @@
+import { PetListing } from "@/components/pet-listing"
+
 export default function Home() {
   return (
-    <section className="flex min-h-screen flex-col items-center bg-background px-4 pt-24">
+    <section className="flex min-h-screen flex-col items-center bg-background px-4 pt-12">
       <div className="flex max-w-2xl flex-col items-center text-center">
         <h1 className="text-3xl font-bold text-foreground md:text-4xl">
           🐾 Gestão de Pets
@@ -35,6 +37,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <PetListing />
     </section>
   );
 }

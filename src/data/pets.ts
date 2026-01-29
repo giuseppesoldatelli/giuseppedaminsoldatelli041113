@@ -9,9 +9,13 @@ export interface Pet {
   especie: "Cachorro" | "Gato" | "Pássaro" | "Coelho" | "Hamster" | "Tartaruga"
   idade: number
   unidadeIdade: "ano" | "anos" | "mes" | "meses"
+  raca?: string
   foto: string | null
   tutor?: Tutor
 }
+
+export const especies: Pet["especie"][] = ["Cachorro", "Gato", "Pássaro", "Coelho", "Hamster", "Tartaruga"]
+export const unidadesIdade: Pet["unidadeIdade"][] = ["ano", "anos", "mes", "meses"]
 
 export const especieEmoji: Record<Pet["especie"], string> = {
   Cachorro: "🐶",

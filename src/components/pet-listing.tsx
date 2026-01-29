@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import Link from "next/link"
 import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react"
-import { pets, type Pet } from "@/data/pets"
+import { pets } from "@/data/pets"
 import { PetCard } from "@/components/pet-card"
-import { PetDetailDialog } from "@/components/pet-detail-dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
@@ -13,7 +13,6 @@ const PER_PAGE = 10
 export function PetListing() {
   const [busca, setBusca] = useState("")
   const [pagina, setPagina] = useState(1)
-  const [petSelecionado, setPetSelecionado] = useState<Pet | null>(null)
 
   const filtrados = useMemo(
     () => pets.filter((p) => p.nome.toLowerCase().includes(busca.toLowerCase())),
@@ -41,16 +40,18 @@ export function PetListing() {
               className="rounded-xl border-0 pl-11 h-12 bg-transparent shadow-none"
             />
           </div>
-          <Button className="rounded-xl h-12 gap-2">
-            <Plus className="size-5" />
-            Adicionar Pet
-          </Button>
+          <Link href="/pets/new">
+            <Button className="rounded-xl h-12 gap-2">
+              <Plus className="size-5" />
+              Adicionar Pet
+            </Button>
+          </Link>
         </div>
 
         {paginados.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {paginados.map((pet) => (
-              <PetCard key={pet.id} pet={pet} onClick={() => setPetSelecionado(pet)} />
+              <PetCard key={pet.id} pet={pet} />
             ))}
           </div>
         ) : (
@@ -98,11 +99,6 @@ export function PetListing() {
         )}
       </div>
 
-      <PetDetailDialog
-        pet={petSelecionado}
-        open={petSelecionado !== null}
-        onOpenChange={(open) => { if (!open) setPetSelecionado(null) }}
-      />
     </div>
   )
 }

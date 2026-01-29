@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/lib/auth/context";
 
 const outfit = Outfit({
 	variable: "--font-outfit",
@@ -29,11 +30,13 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${outfit.variable} ${geistMono.variable} antialiased font-sans`}>
 				<ThemeProvider>
-					<Header />
-					<main className="flex min-h-screen flex-col items-center bg-background px-4 pt-12">
-						<HeroSection />
-						{children}
-					</main>
+					<AuthProvider>
+						<Header />
+						<main className="flex min-h-screen flex-col items-center bg-background px-4 pt-12">
+							<HeroSection />
+							{children}
+						</main>
+					</AuthProvider>
 				</ThemeProvider>
 			</body>
 		</html>

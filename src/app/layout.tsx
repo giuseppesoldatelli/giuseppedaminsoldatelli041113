@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
@@ -31,6 +32,7 @@ export default function RootLayout({
 			<body className={`${outfit.variable} ${geistMono.variable} antialiased font-sans`}>
 				<ThemeProvider>
 					<AuthProvider>
+						<Toaster richColors position="bottom-right" closeButton />
 						<Header />
 						<main className="flex min-h-screen flex-col items-center bg-background px-4 pt-12">
 							<HeroSection />

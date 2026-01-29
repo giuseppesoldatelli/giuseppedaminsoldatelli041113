@@ -1,5 +1,19 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Arquitetura
+
+### Lazy Loading de Rotas
+
+Este projeto utiliza **Next.js App Router** que implementa **code-splitting automático** por rota.
+
+Cada arquivo `page.tsx` gera um chunk JavaScript separado que é carregado sob demanda:
+
+- `/` → chunk da listagem de pets
+- `/pets/[id]` → chunk dos detalhes do pet
+- `/tutores` → chunk do módulo de tutores (quando implementado)
+
+Isso significa que o usuário só baixa o código necessário para a página atual, melhorando a performance inicial.
+
 ## Getting Started
 
 First, run the development server:

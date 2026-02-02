@@ -53,7 +53,10 @@ export function PetDetail({ pet }: PetDetailProps) {
 					{pet.tutores && pet.tutores.length > 0 && (
 						<>
 							<Separator className="bg-muted-foreground/15 my-4 w-full" />
-							<div className="flex items-center justify-around text-sm w-full">
+							<Link
+								href={`/tutores/${pet.tutores[pet.tutores.length - 1].id}`}
+								className="flex items-center justify-around text-sm w-full hover:opacity-70 transition-opacity"
+							>
 								<div className="flex items-center gap-2">
 									<User className="size-4 text-muted-foreground" />
 									<span>{pet.tutores[pet.tutores.length - 1].nome}</span>
@@ -63,7 +66,7 @@ export function PetDetail({ pet }: PetDetailProps) {
 									<Phone className="size-4 text-muted-foreground" />
 									<span>{pet.tutores[pet.tutores.length - 1].telefone}</span>
 								</div>
-							</div>
+							</Link>
 						</>
 					)}
 				</CardContent>

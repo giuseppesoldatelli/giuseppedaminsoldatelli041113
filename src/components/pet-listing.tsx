@@ -1,9 +1,10 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
-import { Search, ChevronLeft, ChevronRight, Plus } from "lucide-react"
-import { pets } from "@/data/pets"
+import { Search, ChevronLeft, ChevronRight, Plus, Loader2 } from "lucide-react"
+import { getPets } from "@/lib/api/pets"
+import type { ApiPet } from "@/lib/api/types"
 import { PetCard } from "@/components/pet-card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -13,14 +14,32 @@ const PER_PAGE = 10
 export function PetListing() {
   const [busca, setBusca] = useState("")
   const [pagina, setPagina] = useState(1)
+  const [pets, setPets] = useState<ApiPet[]>([])
+  const [totalPages, setTotalPages] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const filtrados = useMemo(
-    () => pets.filter((p) => p.nome.toLowerCase().includes(busca.toLowerCase())),
-    [busca]
-  )
+  const fetchPets = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await getPets({
+        page: pagina - 1,
+        size: PER_PAGE,
+        nome: busca || undefined,
+      })
+      setPets(response.content)
+      setTotalPages(response.pageCount)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao carregar pets")
+    } finally {
+      setLoading(false)
+    }
+  }, [pagina, busca])
 
-  const totalPages = Math.ceil(filtrados.length / PER_PAGE)
-  const paginados = filtrados.slice((pagina - 1) * PER_PAGE, pagina * PER_PAGE)
+  useEffect(() => {
+    fetchPets()
+  }, [fetchPets])
 
   function handleBusca(valor: string) {
     setBusca(valor)
@@ -48,9 +67,22 @@ export function PetListing() {
           </Link>
         </div>
 
-        {paginados.length > 0 ? (
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+            <Loader2 className="size-12 mb-4 animate-spin" />
+            <p className="text-lg font-medium">Carregando pets...</p>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-16 text-destructive">
+            <p className="text-lg font-medium">Erro ao carregar</p>
+            <p className="text-sm">{error}</p>
+            <Button variant="outline" className="mt-4" onClick={fetchPets}>
+              Tentar novamente
+            </Button>
+          </div>
+        ) : pets.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {paginados.map((pet) => (
+            {pets.map((pet) => (
               <PetCard key={pet.id} pet={pet} />
             ))}
           </div>
@@ -62,7 +94,7 @@ export function PetListing() {
           </div>
         )}
 
-        {totalPages > 1 && (
+        {totalPages > 1 && !loading && !error && pets.length > 0 && (
           <div className="flex items-center justify-center gap-2 mt-8">
             <Button
               variant="outline"
@@ -98,7 +130,6 @@ export function PetListing() {
           </div>
         )}
       </div>
-
     </div>
   )
 }

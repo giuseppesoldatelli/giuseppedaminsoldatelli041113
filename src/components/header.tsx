@@ -139,7 +139,7 @@ export function Header() {
 													<FormLabel>Usuário</FormLabel>
 													<FormControl>
 														<Input
-															placeholder="seu_usuario"
+															placeholder="login"
 															className="focus-visible:ring-primary"
 															{...field}
 														/>

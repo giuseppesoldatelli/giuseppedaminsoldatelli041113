@@ -70,10 +70,10 @@ export function TutorDetail({ tutor }: TutorDetailProps) {
 							<Separator className="md:hidden bg-muted-foreground/15" />
 							<div className="w-full md:w-56 md:-mt-2">
 								<h3 className="text-sm font-medium text-muted-foreground mb-3">Pets</h3>
-								<div className="flex flex-col gap-2 max-h-80 overflow-y-auto overflow-x-hidden styled-scrollbar pr-2">
+								<div className="flex flex-col gap-2 max-h-[28rem] overflow-y-auto overflow-x-hidden pr-2 styled-scrollbar">
 									{tutor.pets.map((pet) => (
 										<Link key={pet.id} href={`/pets/${pet.id}`}>
-											<div className="flex items-center gap-3 py-2 px-3 rounded-xl bg-background hover:scale-[1.02] transition-transform cursor-pointer">
+											<div className="flex items-center gap-3 py-2 px-3 rounded-xl bg-background cursor-pointer">
 												<Avatar className="size-10 rounded-lg">
 													{pet.foto?.url && <AvatarImage src={pet.foto.url} alt={pet.nome} />}
 													<AvatarFallback className="rounded-lg">

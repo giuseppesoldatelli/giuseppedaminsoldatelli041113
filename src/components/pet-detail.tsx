@@ -50,18 +50,18 @@ export function PetDetail({ pet }: PetDetailProps) {
 						</span>
 					</div>
 
-					{pet.tutor && (
+					{pet.tutores && pet.tutores.length > 0 && (
 						<>
 							<Separator className="bg-muted-foreground/15 my-4 w-full" />
 							<div className="flex items-center justify-around text-sm w-full">
 								<div className="flex items-center gap-2">
 									<User className="size-4 text-muted-foreground" />
-									<span>{pet.tutor.nome}</span>
+									<span>{pet.tutores[pet.tutores.length - 1].nome}</span>
 								</div>
 								<span className="text-muted-foreground">·</span>
 								<div className="flex items-center gap-2">
 									<Phone className="size-4 text-muted-foreground" />
-									<span>{pet.tutor.contato}</span>
+									<span>{pet.tutores[pet.tutores.length - 1].telefone}</span>
 								</div>
 							</div>
 						</>

@@ -6,8 +6,13 @@ export interface ApiFoto {
 }
 
 export interface ApiTutor {
+  id: number
   nome: string
-  contato: string
+  telefone: string
+  email?: string | null
+  endereco?: string
+  cpf?: string | null
+  foto?: ApiFoto | null
 }
 
 export interface ApiPet {
@@ -16,7 +21,7 @@ export interface ApiPet {
   raca?: string
   idade: number
   foto?: ApiFoto | null
-  tutor?: ApiTutor
+  tutores?: ApiTutor[]
 }
 
 export interface PaginatedResponse<T> {

@@ -4,7 +4,7 @@ import { use, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
-import { getPetById, updatePet } from "@/lib/api/pets"
+import { getPetById, updatePet, uploadPetPhoto } from "@/lib/api/pets"
 import type { ApiPet } from "@/lib/api/types"
 import { PetForm } from "@/components/pet-form"
 
@@ -40,6 +40,7 @@ export default function EditPetPage({ params }: EditPetPageProps) {
       raca: string
       idade: number
     },
+    file: File | null
   ) {
     if (!pet) return
 
@@ -50,6 +51,11 @@ export default function EditPetPage({ params }: EditPetPageProps) {
         raca: data.raca,
         idade: data.idade,
       })
+
+      if (file) {
+        await uploadPetPhoto(pet.id, file)
+      }
+
       toast.success("Pet atualizado com sucesso!")
       router.push(`/pets/${pet.id}`)
     } catch (err) {

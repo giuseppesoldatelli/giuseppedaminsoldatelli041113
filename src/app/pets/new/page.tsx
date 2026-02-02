@@ -1,25 +1,39 @@
 "use client"
 
+import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { pets } from "@/data/pets"
+import { toast } from "sonner"
 import { PetForm } from "@/components/pet-form"
+import { createPet, uploadPetPhoto } from "@/lib/api/pets"
 
 export default function NewPetPage() {
   const router = useRouter()
+  const [submitting, setSubmitting] = useState(false)
 
-  function handleSubmit(data: { nome: string; especie: "Cachorro" | "Gato" | "Pássaro" | "Coelho" | "Hamster" | "Tartaruga"; idade: number; unidadeIdade: "ano" | "anos" | "mes" | "meses"; raca?: string }, fotoUrl: string | null) {
-    const newPet = {
-      id: Math.max(...pets.map(p => p.id)) + 1,
-      nome: data.nome,
-      especie: data.especie,
-      idade: data.idade,
-      unidadeIdade: data.unidadeIdade,
-      raca: data.raca,
-      foto: fotoUrl,
+  async function handleSubmit(
+    data: { nome: string; raca: string; idade: number },
+    file: File | null
+  ) {
+    setSubmitting(true)
+    try {
+      const pet = await createPet({
+        nome: data.nome,
+        raca: data.raca,
+        idade: data.idade,
+      })
+
+      if (file) {
+        await uploadPetPhoto(pet.id, file)
+      }
+
+      toast.success("Pet cadastrado com sucesso!")
+      router.push(`/pets/${pet.id}`)
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro ao cadastrar pet")
+    } finally {
+      setSubmitting(false)
     }
-    pets.push(newPet)
-    router.push("/")
   }
 
-  return <PetForm onSubmit={handleSubmit} />
+  return <PetForm onSubmit={handleSubmit} isSubmitting={submitting} />
 }

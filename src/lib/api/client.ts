@@ -65,8 +65,10 @@ export async function apiClient<T>(
 ): Promise<T> {
   const url = `${API_URL}${endpoint}`;
 
+  const isFormData = options.body instanceof FormData;
+
   const headers: HeadersInit = {
-    "Content-Type": "application/json",
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
     ...options.headers,
   };
 

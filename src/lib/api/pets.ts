@@ -34,11 +34,10 @@ export async function createPet(data: CreatePetPayload): Promise<ApiPet> {
 
 export async function uploadPetPhoto(petId: number, file: File): Promise<ApiFoto> {
 	const formData = new FormData();
-	formData.append("file", file);
+	formData.append("foto", file);
 
 	return apiClient<ApiFoto>(`/v1/pets/${petId}/fotos`, {
 		method: "POST",
 		body: formData,
-		headers: {},
 	});
 }

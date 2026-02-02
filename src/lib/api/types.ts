@@ -38,6 +38,10 @@ export interface PetsListParams {
   nome?: string
 }
 
+export interface ApiTutorDetail extends ApiTutor {
+  pets?: ApiPet[]
+}
+
 export interface UpdatePetPayload {
   nome: string
   raca?: string

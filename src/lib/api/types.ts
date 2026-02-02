@@ -47,3 +47,9 @@ export interface UpdatePetPayload {
   raca?: string
   idade: number
 }
+
+export interface CreatePetPayload {
+  nome: string
+  raca?: string
+  idade: number
+}

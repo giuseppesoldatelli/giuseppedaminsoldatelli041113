@@ -1,5 +1,5 @@
 import { apiClient } from "./client";
-import type { ApiPet, PaginatedResponse, PetsListParams, UpdatePetPayload } from "./types";
+import type { ApiPet, ApiFoto, PaginatedResponse, PetsListParams, UpdatePetPayload, CreatePetPayload } from "./types";
 
 export async function getPets(params: PetsListParams = {}): Promise<PaginatedResponse<ApiPet>> {
 	const searchParams = new URLSearchParams();
@@ -22,5 +22,23 @@ export async function updatePet(id: number, data: UpdatePetPayload): Promise<Api
 	return apiClient<ApiPet>(`/v1/pets/${id}`, {
 		method: "PUT",
 		body: JSON.stringify(data),
+	});
+}
+
+export async function createPet(data: CreatePetPayload): Promise<ApiPet> {
+	return apiClient<ApiPet>("/v1/pets", {
+		method: "POST",
+		body: JSON.stringify(data),
+	});
+}
+
+export async function uploadPetPhoto(petId: number, file: File): Promise<ApiFoto> {
+	const formData = new FormData();
+	formData.append("file", file);
+
+	return apiClient<ApiFoto>(`/v1/pets/${petId}/fotos`, {
+		method: "POST",
+		body: formData,
+		headers: {},
 	});
 }

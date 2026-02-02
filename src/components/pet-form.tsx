@@ -21,21 +21,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const petSchema = z.object({
-	nome: z.string().min(1, "Nome obrigatório"),
-	raca: z.string().min(1, "Espécie/raça obrigatória"),
-	idade: z.number().min(1, "Idade inválida"),
+	nome: z.string().min(1, "Nome obrigatório").max(100, "Nome deve ter no máximo 100 caracteres"),
+	raca: z.string().min(1, "Espécie/raça obrigatória").max(100, "Raça deve ter no máximo 100 caracteres"),
+	idade: z.number().min(1, "Idade inválida").max(999, "Idade deve ter no máximo 999 anos"),
 });
 
 type PetFormData = z.infer<typeof petSchema>;
 
 interface PetFormProps {
 	pet?: ApiPet;
-	onSubmit: (data: PetFormData, fotoUrl: string | null) => void;
+	onSubmit: (data: PetFormData, file: File | null) => void;
 	isSubmitting?: boolean;
 }
 
 export function PetForm({ pet, onSubmit, isSubmitting }: PetFormProps) {
 	const [fotoPreview, setFotoPreview] = useState<string | null>(null);
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
 	const form = useForm<PetFormData>({
 		resolver: zodResolver(petSchema) as never,
@@ -62,11 +63,12 @@ export function PetForm({ pet, onSubmit, isSubmitting }: PetFormProps) {
 		if (file) {
 			const url = URL.createObjectURL(file);
 			setFotoPreview(url);
+			setSelectedFile(file);
 		}
 	}
 
 	function handleFormSubmit(data: PetFormData) {
-		onSubmit(data, fotoPreview);
+		onSubmit(data, selectedFile);
 	}
 
 	return (
@@ -147,6 +149,7 @@ export function PetForm({ pet, onSubmit, isSubmitting }: PetFormProps) {
 											<Input
 												type="number"
 												min={0}
+												max={999}
 												placeholder="0"
 												{...field}
 												onChange={(e) => field.onChange(Number(e.target.value))}

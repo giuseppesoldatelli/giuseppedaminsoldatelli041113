@@ -4,10 +4,10 @@ import Link from "next/link";
 import { ArrowLeft, User, Phone, Pencil, PawPrint } from "lucide-react";
 import type { ApiPet } from "@/lib/api/types";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { TruncatedText } from "@/components/ui/truncated-text";
 
 interface PetDetailProps {
 	pet: ApiPet;
@@ -42,9 +42,14 @@ export function PetDetail({ pet }: PetDetailProps) {
 						</AvatarFallback>
 					</Avatar>
 
-					<div className="flex flex-col items-center gap-2 mt-4">
-						<span className="text-3xl font-bold text-primary">{pet.nome}</span>
-						{pet.raca && <Badge variant="secondary">{pet.raca}</Badge>}
+					<div className="flex flex-col items-center gap-2 mt-4 w-full">
+						<TruncatedText
+							text={pet.nome}
+							className="text-3xl font-bold text-primary max-w-full text-center"
+						/>
+						{pet.raca && (
+							<TruncatedText text={pet.raca} as="badge" className="max-w-full" />
+						)}
 						<span className="text-sm text-muted-foreground">
 							{pet.idade} {pet.idade === 1 ? "ano" : "anos"}
 						</span>

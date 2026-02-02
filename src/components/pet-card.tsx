@@ -1,9 +1,11 @@
+"use client"
+
 import Link from "next/link"
 import { PawPrint } from "lucide-react"
 import type { ApiPet } from "@/lib/api/types"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+import { TruncatedText } from "@/components/ui/truncated-text"
 
 interface PetCardProps {
   pet: ApiPet
@@ -21,11 +23,16 @@ export function PetCard({ pet }: PetCardProps) {
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1">
-            <span className="font-semibold leading-none">{pet.nome}</span>
+            <TruncatedText
+              text={pet.nome}
+              className="font-semibold max-w-[120px]"
+            />
             <span className="text-sm text-muted-foreground">
               {pet.idade} {pet.idade === 1 ? "ano" : "anos"}
             </span>
-            {pet.raca && <Badge variant="secondary">{pet.raca}</Badge>}
+            {pet.raca && (
+              <TruncatedText text={pet.raca} as="badge" className="max-w-[100px]" />
+            )}
           </div>
         </CardContent>
       </Card>

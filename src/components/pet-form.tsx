@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
-import { ArrowLeft, Upload } from "lucide-react";
-import type { Pet } from "@/data/pets";
-import { especies, unidadesIdade, especieEmoji } from "@/data/pets";
+import { ArrowLeft, Upload, PawPrint } from "lucide-react";
+import type { ApiPet } from "@/lib/api/types";
 import {
 	Form,
 	FormField,
@@ -20,48 +19,43 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 
 const petSchema = z.object({
 	nome: z.string().min(1, "Nome obrigatório"),
-	especie: z.enum(["Cachorro", "Gato", "Pássaro", "Coelho", "Hamster", "Tartaruga"], {
-		message: "Selecione uma espécie",
-	}),
+	raca: z.string().min(1, "Espécie/raça obrigatória"),
 	idade: z.number().min(1, "Idade inválida"),
-	unidadeIdade: z.enum(["ano", "anos", "mes", "meses"], {
-		message: "Selecione a unidade",
-	}),
-	raca: z.string().optional(),
 });
 
 type PetFormData = z.infer<typeof petSchema>;
 
 interface PetFormProps {
-	pet?: Pet;
+	pet?: ApiPet;
 	onSubmit: (data: PetFormData, fotoUrl: string | null) => void;
+	isSubmitting?: boolean;
 }
 
-export function PetForm({ pet, onSubmit }: PetFormProps) {
-	const [fotoPreview, setFotoPreview] = useState<string | null>(pet?.foto ?? null);
+export function PetForm({ pet, onSubmit, isSubmitting }: PetFormProps) {
+	const [fotoPreview, setFotoPreview] = useState<string | null>(null);
 
 	const form = useForm<PetFormData>({
 		resolver: zodResolver(petSchema) as never,
 		defaultValues: {
-			nome: pet?.nome ?? "",
-			especie: pet?.especie,
-			idade: pet?.idade ?? 0,
-			unidadeIdade: pet?.unidadeIdade ?? "anos",
-			raca: pet?.raca ?? "",
+			nome: "",
+			raca: "",
+			idade: 0,
 		},
 	});
 
-	const especieSelecionada = form.watch("especie");
+	useEffect(() => {
+		if (pet) {
+			form.reset({
+				nome: pet.nome ?? "",
+				raca: pet.raca ?? "",
+				idade: pet.idade ?? 0,
+			});
+			setFotoPreview(pet.foto?.url ?? null);
+		}
+	}, [pet, form]);
 
 	function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const file = e.target.files?.[0];
@@ -98,7 +92,7 @@ export function PetForm({ pet, onSubmit }: PetFormProps) {
 								<Avatar className="size-32 rounded-xl">
 									{fotoPreview && <AvatarImage src={fotoPreview} alt="Preview" />}
 									<AvatarFallback className="rounded-xl text-5xl bg-muted">
-										{especieSelecionada ? especieEmoji[especieSelecionada] : "?"}
+										<PawPrint className="size-12" />
 									</AvatarFallback>
 								</Avatar>
 								<label className="cursor-pointer">
@@ -131,24 +125,13 @@ export function PetForm({ pet, onSubmit }: PetFormProps) {
 
 							<FormField
 								control={form.control}
-								name="especie"
+								name="raca"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Espécie</FormLabel>
-										<Select onValueChange={field.onChange} defaultValue={field.value}>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Selecione a espécie" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												{especies.map((especie) => (
-													<SelectItem key={especie} value={especie}>
-														{especieEmoji[especie]} {especie}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
+										<FormLabel>Espécie/raça</FormLabel>
+										<FormControl>
+											<Input placeholder="Ex: Labrador Retriever, Gato Persa..." {...field} />
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -156,67 +139,26 @@ export function PetForm({ pet, onSubmit }: PetFormProps) {
 
 							<FormField
 								control={form.control}
-								name="raca"
+								name="idade"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Raça (opcional)</FormLabel>
+										<FormLabel>Idade (anos)</FormLabel>
 										<FormControl>
-											<Input placeholder="Raça do pet" {...field} />
+											<Input
+												type="number"
+												min={0}
+												placeholder="0"
+												{...field}
+												onChange={(e) => field.onChange(Number(e.target.value))}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
 
-							<div className="grid grid-cols-2 gap-4 items-start">
-								<FormField
-									control={form.control}
-									name="idade"
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Idade</FormLabel>
-											<FormControl>
-												<Input
-													type="number"
-													min={0}
-													placeholder="0"
-													{...field}
-													onChange={(e) => field.onChange(Number(e.target.value))}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-
-								<FormField
-									control={form.control}
-									name="unidadeIdade"
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Unidade</FormLabel>
-											<Select onValueChange={field.onChange} defaultValue={field.value}>
-												<FormControl>
-													<SelectTrigger>
-														<SelectValue placeholder="Unidade" />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent>
-													{unidadesIdade.map((unidade) => (
-														<SelectItem key={unidade} value={unidade}>
-															{unidade}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-
-							<Button type="submit" className="w-full">
-								{pet ? "Salvar alterações" : "Cadastrar pet"}
+							<Button type="submit" className="w-full" disabled={isSubmitting}>
+								{isSubmitting ? "Salvando..." : pet ? "Salvar alterações" : "Cadastrar pet"}
 							</Button>
 						</form>
 					</Form>

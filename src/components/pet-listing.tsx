@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { Search, ChevronLeft, ChevronRight, Plus, Loader2 } from "lucide-react"
 import { getPets } from "@/lib/api/pets"
+import { getPaginationItems } from "@/lib/utils"
 import type { ApiPet } from "@/lib/api/types"
 import { PetCard } from "@/components/pet-card"
 import { Input } from "@/components/ui/input"
@@ -106,17 +107,26 @@ export function PetListing() {
               <ChevronLeft />
             </Button>
 
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-              <Button
-                key={num}
-                variant={num === pagina ? "default" : "outline"}
-                size="icon"
-                className="rounded-full"
-                onClick={() => setPagina(num)}
-              >
-                {num}
-              </Button>
-            ))}
+            {getPaginationItems(pagina, totalPages).map((item, index) =>
+              item === "ellipsis" ? (
+                <span
+                  key={`ellipsis-${index}`}
+                  className="text-muted-foreground"
+                >
+                  ...
+                </span>
+              ) : (
+                <Button
+                  key={item}
+                  variant={item === pagina ? "default" : "outline"}
+                  size="icon"
+                  className="rounded-full"
+                  onClick={() => setPagina(item)}
+                >
+                  {item}
+                </Button>
+              )
+            )}
 
             <Button
               variant="outline"

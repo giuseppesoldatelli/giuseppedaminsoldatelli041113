@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { ChevronDown, Eye, EyeOff, LogOut } from "lucide-react";
+import { ChevronDown, Eye, EyeOff, Home, LogOut } from "lucide-react";
+import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,6 +40,18 @@ export function Header() {
 		},
 	});
 
+	const homeButton = (
+		<Link href="/">
+			<Button
+				variant="outline"
+				size="icon"
+				className="rounded-full bg-card shadow-sm border-border hover:border-primary/50 dark:bg-card/90 dark:text-foreground dark:border-border/60"
+			>
+				<Home className="h-4 w-4" />
+			</Button>
+		</Link>
+	);
+
 	async function onSubmit(data: LoginFormData) {
 		setLoginError(null);
 		setIsSubmitting(true);
@@ -64,7 +77,8 @@ export function Header() {
 
 	if (isLoading) {
 		return (
-			<header className="fixed top-0 left-0 right-0 flex justify-end p-4 z-50">
+			<header className="fixed top-0 left-0 right-0 flex justify-between p-4 z-50">
+				{homeButton}
 				<div className="flex items-center gap-2">
 					<ThemeToggle />
 					<Button
@@ -81,7 +95,8 @@ export function Header() {
 
 	if (isAuthenticated && user) {
 		return (
-			<header className="fixed top-0 left-0 right-0 flex justify-end p-4 z-50">
+			<header className="fixed top-0 left-0 right-0 flex justify-between p-4 z-50">
+				{homeButton}
 				<div className="flex items-center gap-2">
 					<ThemeToggle />
 					<div className="flex items-center gap-3 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border font-medium bg-card shadow-sm dark:bg-card/90">
@@ -102,7 +117,8 @@ export function Header() {
 	}
 
 	return (
-		<header className="fixed top-0 left-0 right-0 flex justify-end p-4 z-50">
+		<header className="fixed top-0 left-0 right-0 flex justify-between p-4 z-50">
+			{homeButton}
 			<div className="flex items-center gap-2">
 				<ThemeToggle />
 				<Popover open={open} onOpenChange={setOpen}>

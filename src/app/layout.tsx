@@ -6,6 +6,7 @@ import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/lib/auth/context";
+import { LoginPopoverProvider } from "@/lib/auth/login-popover-context";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const outfit = Outfit({
@@ -33,14 +34,16 @@ export default function RootLayout({
 			<body className={`${outfit.variable} ${geistMono.variable} antialiased font-sans`}>
 				<ThemeProvider>
 					<AuthProvider>
-						<TooltipProvider>
-							<Toaster richColors position="bottom-right" closeButton />
-							<Header />
-							<main className="flex min-h-screen flex-col items-center bg-background px-4 pt-12">
-								<HeroSection />
-								{children}
-							</main>
-						</TooltipProvider>
+						<LoginPopoverProvider>
+							<TooltipProvider>
+								<Toaster richColors position="bottom-right" closeButton />
+								<Header />
+								<main className="flex min-h-screen flex-col items-center bg-background px-4 pt-12">
+									<HeroSection />
+									{children}
+								</main>
+							</TooltipProvider>
+						</LoginPopoverProvider>
 					</AuthProvider>
 				</ThemeProvider>
 			</body>

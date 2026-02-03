@@ -19,11 +19,12 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { useAuth } from "@/lib/auth/context";
+import { useLoginPopover } from "@/lib/auth/login-popover-context";
 import { loginSchema, type LoginFormData } from "@/lib/auth/schemas";
 
 export function Header() {
 	const { user, isAuthenticated, isLoading, login, logout } = useAuth();
-	const [open, setOpen] = useState(false);
+	const { isOpen: open, setIsOpen: setOpen } = useLoginPopover();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showRegisterPassword, setShowRegisterPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);

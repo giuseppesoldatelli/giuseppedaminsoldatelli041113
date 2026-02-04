@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useEffect, useState } from "react"
+import { use, useEffect, useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 import { getTutorById } from "@/lib/api/tutores"
@@ -18,19 +18,24 @@ export default function TutorPage({ params }: TutorPageProps) {
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 
-	useEffect(() => {
-		async function fetchTutor() {
-			try {
-				const data = await getTutorById(Number(id))
-				setTutor(data)
-			} catch (err) {
-				setError(err instanceof Error ? err.message : "Erro ao carregar tutor")
-			} finally {
-				setLoading(false)
-			}
+	const fetchTutor = useCallback(async () => {
+		try {
+			const data = await getTutorById(Number(id))
+			setTutor(data)
+		} catch (err) {
+			setError(err instanceof Error ? err.message : "Erro ao carregar tutor")
+		} finally {
+			setLoading(false)
 		}
-		fetchTutor()
 	}, [id])
+
+	useEffect(() => {
+		fetchTutor()
+	}, [fetchTutor])
+
+	function handleRefresh() {
+		fetchTutor()
+	}
 
 	if (loading) {
 		return (
@@ -55,5 +60,5 @@ export default function TutorPage({ params }: TutorPageProps) {
 		)
 	}
 
-	return <TutorDetail tutor={tutor} />
+	return <TutorDetail tutor={tutor} onPetLinked={handleRefresh} onPetUnlinked={handleRefresh} />
 }

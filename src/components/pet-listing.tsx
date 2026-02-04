@@ -7,7 +7,7 @@ import { getPets } from "@/lib/api/pets"
 import { getPaginationItems } from "@/lib/utils"
 import type { ApiPet } from "@/lib/api/types"
 import { PetCard } from "@/components/pet-card"
-import { Input } from "@/components/ui/input"
+import { SearchInput } from "@/components/search-input"
 import { Button } from "@/components/ui/button"
 
 const PER_PAGE = 10
@@ -51,15 +51,11 @@ export function PetListing() {
     <div className="mt-16 w-full pb-16">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center gap-3 mb-8 max-w-2xl mx-auto">
-          <div className="relative flex-1 rounded-xl shadow-lg bg-card dark:bg-card">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground z-10" />
-            <Input
-              placeholder="Buscar pet por nome..."
-              value={busca}
-              onChange={(e) => handleBusca(e.target.value)}
-              className="rounded-xl border-0 pl-11 h-12 bg-transparent shadow-none"
-            />
-          </div>
+          <SearchInput
+            value={busca}
+            onChange={handleBusca}
+            placeholder="Buscar pet por nome..."
+          />
           <Link href="/pets/new">
             <Button className="rounded-xl h-12 gap-2">
               <Plus className="size-5" />

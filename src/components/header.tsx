@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { ChevronDown, Eye, EyeOff, Home, LogOut } from "lucide-react";
+import { ChevronDown, Eye, EyeOff, Home, LogOut, PawPrint, User } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -96,7 +96,29 @@ export function Header() {
 	if (isAuthenticated && user) {
 		return (
 			<header className="fixed top-0 left-0 right-0 flex justify-between p-4 z-50">
-				{homeButton}
+				<div className="flex items-center gap-2">
+					{homeButton}
+					<Link href="/">
+						<Button
+							variant="outline"
+							size="sm"
+							className="rounded-full bg-card shadow-sm border-border hover:border-primary/50 dark:bg-card/90 dark:text-foreground dark:border-border/60 gap-1.5"
+						>
+							<PawPrint className="h-4 w-4" />
+							<span className="hidden sm:inline">Pets</span>
+						</Button>
+					</Link>
+					<Link href="/tutores">
+						<Button
+							variant="outline"
+							size="sm"
+							className="rounded-full bg-card shadow-sm border-border hover:border-primary/50 dark:bg-card/90 dark:text-foreground dark:border-border/60 gap-1.5"
+						>
+							<User className="h-4 w-4" />
+							<span className="hidden sm:inline">Tutores</span>
+						</Button>
+					</Link>
+				</div>
 				<div className="flex items-center gap-2">
 					<ThemeToggle />
 					<div className="flex items-center gap-3 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border font-medium bg-card shadow-sm dark:bg-card/90">

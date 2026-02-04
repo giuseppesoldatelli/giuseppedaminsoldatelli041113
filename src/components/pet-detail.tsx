@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowLeft, User, Phone, Pencil, PawPrint } from "lucide-react";
 import type { ApiPet } from "@/lib/api/types";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -14,10 +15,14 @@ interface PetDetailProps {
 }
 
 export function PetDetail({ pet }: PetDetailProps) {
+	const pathname = usePathname();
+	const parentPath = pathname.split("/").slice(0, -1).join("/") || "/";
+	const backPath = parentPath === "/pets" ? "/" : parentPath;
+
 	return (
 		<div className="mt-8 w-full flex flex-col items-center pb-16 px-4">
 			<div className="w-full max-w-md mb-2 flex items-center justify-between">
-				<Link href="/" className="inline-flex items-center p-2 hover:opacity-70 transition-opacity">
+				<Link href={backPath} className="inline-flex items-center p-2 hover:opacity-70 transition-opacity">
 					<ArrowLeft className="size-5" />
 					<span className="ml-2 cursor-pointer">Voltar</span>
 				</Link>

@@ -38,6 +38,12 @@ export interface PetsListParams {
   nome?: string
 }
 
+export interface TutorsListParams {
+  page?: number
+  size?: number
+  nome?: string
+}
+
 export interface ApiTutorDetail extends ApiTutor {
   pets?: ApiPet[]
 }
@@ -52,4 +58,20 @@ export interface CreatePetPayload {
   nome: string
   raca?: string
   idade: number
+}
+
+export interface CreateTutorPayload {
+  nome: string
+  telefone: string
+  cpf: string
+  email?: string
+  endereco?: string
+}
+
+export interface UpdateTutorPayload {
+  nome: string
+  telefone: string
+  cpf: string
+  email?: string
+  endereco?: string
 }

@@ -28,12 +28,21 @@ Isso significa que o usuário só baixa o código necessário para a página atu
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Abra [http://localhost:3000](http://localhost:3000) com seu navegador.
+
+## Testes
+
+O projeto utiliza [Vitest](https://vitest.dev/) com [Testing Library](https://testing-library.com/).
+
+```bash
+# Executar testes
+npm run test
+
+# Executar testes com interface visual
+npm run test:ui
+
+# Executar testes com cobertura
+npm run test:coverage
+```

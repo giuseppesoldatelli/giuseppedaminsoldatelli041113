@@ -1,3 +1,26 @@
+## Como rodar o projeto
+
+```bash
+npm run dev
+```
+
+Abra [http://localhost:3000](http://localhost:3000) com seu navegador.
+
+## Testes
+
+O projeto utiliza [Vitest](https://vitest.dev/) com [Testing Library](https://testing-library.com/).
+
+```bash
+# Executar testes
+npm run test
+
+# Executar testes com interface visual
+npm run test:ui
+
+# Executar testes com cobertura
+npm run test:coverage
+```
+
 ## Funcionalidades Bônus
 
 - **Listagem de Tutores** - Página `/tutores` com busca por nome e paginação
@@ -23,26 +46,3 @@ Cada arquivo `page.tsx` gera um chunk JavaScript separado que é carregado sob d
 - `/tutores` → chunk do módulo de tutores (quando implementado)
 
 Isso significa que o usuário só baixa o código necessário para a página atual, melhorando a performance inicial.
-
-## Como rodar o projeto
-
-```bash
-npm run dev
-```
-
-Abra [http://localhost:3000](http://localhost:3000) com seu navegador.
-
-## Testes
-
-O projeto utiliza [Vitest](https://vitest.dev/) com [Testing Library](https://testing-library.com/).
-
-```bash
-# Executar testes
-npm run test
-
-# Executar testes com interface visual
-npm run test:ui
-
-# Executar testes com cobertura
-npm run test:coverage
-```

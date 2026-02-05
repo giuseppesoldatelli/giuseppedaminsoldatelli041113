@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { ChevronDown, Eye, EyeOff, Home, LogOut, PawPrint, User } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { HealthIndicator } from "@/components/health-indicator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -80,6 +81,7 @@ export function Header() {
 			<header className="fixed top-0 left-0 right-0 flex justify-between p-4 z-50">
 				{homeButton}
 				<div className="flex items-center gap-2">
+					<HealthIndicator />
 					<ThemeToggle />
 					<Button
 						variant="outline"
@@ -120,6 +122,7 @@ export function Header() {
 					</Link>
 				</div>
 				<div className="flex items-center gap-2">
+					<HealthIndicator />
 					<ThemeToggle />
 					<div className="flex items-center gap-3 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-border font-medium bg-card shadow-sm dark:bg-card/90">
 						<span className="text-foreground">{user.username}</span>
@@ -142,6 +145,7 @@ export function Header() {
 		<header className="fixed top-0 left-0 right-0 flex justify-between p-4 z-50">
 			{homeButton}
 			<div className="flex items-center gap-2">
+				<HealthIndicator />
 				<ThemeToggle />
 				<Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
